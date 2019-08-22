@@ -1,0 +1,32 @@
+<p>Dear Dennis Corvi,</p>
+
+<p>
+  You have been sent contact information from {{ contact.name }}.
+</p>
+
+<p>
+  Date: {{ contact.date.strftime('%m-%d-%Y') }}
+  <br>
+  Time: {{ contact.date.strftime('%I:%M:%S %p %z') }}
+</p>
+
+<p>
+  Name: {{ contact.name }}
+</p>
+
+<p>
+  Phone: {{ contact.phone }}
+</p>
+
+
+<p>
+  Email: {{ contact.email }}
+</p>
+
+<p>
+  Message: {{ contact.message }}
+</p>
+
+<p>
+  Message ID: {{ contact.id }}
+</p>

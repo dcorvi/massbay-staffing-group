@@ -1,0 +1,184 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+  Mass Bay Staffing Group
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="../static/css/main.css">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-T5jhQKMh96HMkXwqVMSjF3CmLcL1nT9//tCqu9By5XSdj7CwR0r+F3LTzUdfkkQf" crossorigin="anonymous">
+{% endblock %}
+
+{% block navbar %}
+<!-- error messages - basic -->
+<!-- {% for mess in get_flashed_messages() %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{ mess }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{% endfor %} -->
+
+<!-- error messages - categories -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+      {% if category == 'success' %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+      {% endif %}
+      {% if category == 'error' %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+      {% endif %}
+      {% if category == 'info' %}
+      <div class="alert alert-info alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+      {% endif %}
+      {% if category == 'warning' %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+      {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+<!-- As logo as a link -->
+  <a href="{{ url_for('core.index') }}">
+<img class="logo" src="../static/images/logo1.png" alt="avatar" height="100" width="200"></a>
+
+<nav class="navbar sticky-top navbar-default navbar-expand-lg navbar-dark" style="background-color: #007bff;">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav mr-5">
+
+      {% if title == 'About Us' %}
+        <li class="nav-item active">
+      {% else %}
+        <li class="nav-item">
+      {% endif %}
+          <a class="nav-link" href="{{ url_for('core.aboutus') }}">About Us</a>
+        </li>
+
+      {% if title == 'Newsletter' %}
+        <li class="nav-item active">
+      {% else %}
+        <li class="nav-item">
+      {% endif %}
+        <a class="nav-link" href="{{ url_for('core.newsletter') }}">Newsletter</a>
+      </li>
+
+      {% if title == 'Available Positions' %}
+        <li class="nav-item active">
+      {% else %}
+        <li class="nav-item">
+      {% endif %}
+        <a class="nav-link" href="{{ url_for('core.positions') }}">Available Positions</a>
+      </li>
+
+      {% if title == 'Blog' %}
+        <li class="nav-item active">
+      {% else %}
+        <li class="nav-item">
+      {% endif %}
+        <a class="nav-link" href="{{ url_for('core.blog') }}">Blog</a>
+      </li>
+
+      {% if title == 'Contact' %}
+        <li class="nav-item active">
+      {% else %}
+        <li class="nav-item">
+      {% endif %}
+          <a class="nav-link" href="{{ url_for('core.contact') }}">Contact</a>
+        </li>
+    </ul>
+
+        <span class="navbar-nav">
+       {% if current_user.is_authenticated %}
+
+         {% if title == 'Account' %}
+           <li class="nav-item dropdown active">
+         {% else %}
+           <li class="nav-item dropdown">
+         {% endif %}
+             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               {{ current_user.username }}
+             </a>
+             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+               <a class="dropdown-item" href="{{url_for('users.account')}}">Account</a>
+               <a class="dropdown-item" href="{{ url_for('job_posts.create_job') }}">Create Job</a>
+               <a class="dropdown-item" href="{{ url_for('blog_posts.create_post') }}">Create Blog Post</a>
+               <a class="dropdown-item" href="{{url_for('users.profile', username=current_user.username)}}">Profile</a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item" href="{{url_for('users.logout')}}">Logout</a>
+             </div>
+            </li>
+       {% else %}
+       {% if title == 'Login' %}
+         <li class="nav-item active">
+       {% else %}
+         <li class="nav-item">
+       {% endif %}
+         <a class="nav-link" href="{{url_for('users.login')}}">Log In</a>
+       </li>
+
+       {% if title == 'Register' %}
+         <li class="nav-item active">
+       {% else %}
+         <li class="nav-item">
+       {% endif %}
+         <a class="nav-link" href="{{url_for('users.register')}}">Register</a>
+       </li>
+       {% endif %}
+     </span> <!-- end login/register and account links -->
+
+  </div> <!-- end nav bar -->
+</nav>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+  <!-- all template files will render within block app content -->
+  {% block app_content %}{% endblock %}
+
+  {% endblock %}
+
+{% block scripts %}
+<!-- jQuery CDN -->
+<script
+src="https://code.jquery.com/jquery-3.3.1.min.js"
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+crossorigin="anonymous"></script>
+<!-- Bootstrap AJAX CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+{{super()}}
+{% endblock %}
+
+<!-- jQuery CDN -->
+<!-- <script
+src="https://code.jquery.com/jquery-3.3.1.min.js"
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+crossorigin="anonymous"></script> -->
+
+<!-- Bootstrap AJAX CDN -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->

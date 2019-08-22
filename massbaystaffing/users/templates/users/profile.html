@@ -1,0 +1,90 @@
+{% import 'bootstrap/wtf.html' as wtf %}
+{% extends 'base.html' %}
+
+
+{% block app_content %}
+  <div class="container">
+    <main>
+      <h3>{{ user.username }}</h3>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist"> <!-- start tabs here -->
+  <li class="nav-item">
+    <a class="nav-link active" id="blog-tab" data-toggle="tab" href="#blog" role="tab" aria-controls="blog" aria-selected="true">Blog</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="jobs-tab" data-toggle="tab" href="#jobs" role="tab" aria-controls="jobs" aria-selected="false">Jobs</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="function1-tab" data-toggle="tab" href="#function1" role="tab" aria-controls="function1" aria-selected="false">Other Function</a>
+  </li>
+</ul> <!-- ends tabs here -->
+
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="blog" role="tabpanel" aria-labelledby="blog-tab">
+
+      <div class="row"> <!-- start blog tab content here -->
+        <div class="col-md-4">
+          <div class="card">
+            <img src="http://placehold.it/250x250" alt="Placehold Image" class="card-img">
+            <!-- <div class="card-title">{{ user.username }}</div> -->
+            <div class="card-title">{{ user.first_name }} {{ user.last_name }}</div>
+            <div class="card-subtitle">Editor</div>
+            <div class="card-text">
+              <p></p>
+            </div>
+          </div>
+        </div> <!-- ends col 4 -->
+        <div class="col-md-8">
+          {% if current_user.username == user.username %}
+          <div class="card">
+            {{ wtf.quick_form(form) }}
+          </div> <!-- ends card for form -->
+          {% endif %}
+          <!-- TODO: Loop over this card for all tweets -->
+          {% for post in user.posts[::-1] %}
+          <div class="card">
+            <div class="date">{{ post.date_posted.date() }}</div>
+            <div class="tweet">
+              <p> {{ post.tweet }} </p>
+            </div>
+            <div class="author">- {{ user.username }}</div>
+          </div> <!-- ends card for tweet -->
+          {% endfor %}
+        </div> <!-- ends col 8 -->
+      </div><!-- ends row -->
+      </div> <!-- ends add blogs form tab here -->
+
+
+      <div class="tab-pane fade" id="jobs" role="tabpanel" aria-labelledby="jobs-tab">
+        <p>Add jobs content here</p>
+
+        <div class="row"> <!-- start add jobs form tab content here -->
+          <div class="col-md-4">
+            <p>Some info for column 4</p>
+          </div> <!-- ends col 4 -->
+          <div class="col-md-8">
+            {% if current_user.username == user.username %}
+            <div class="card">
+              {{ wtf.quick_form(form) }}
+            </div> <!-- ends card for form -->
+            {% endif %}
+            <!-- TODO: Loop over this card for all tweets -->
+            {% for post in user.posts[::-1] %}
+            <div class="card">
+              <div class="date">{{ post.date_posted.date() }}</div>
+              <div class="tweet">
+                <p> {{ post.tweet }} </p>
+              </div>
+              <div class="author">- {{ user.username }}</div>
+            </div> <!-- ends card for tweet -->
+            {% endfor %}
+          </div> <!-- ends col 8 -->
+        </div><!-- ends row -->
+      </div> <!-- ends add jobs form tab content here -->
+
+
+      <div class="tab-pane fade" id="function1" role="tabpanel" aria-labelledby="function1-tab">Other Function</div>
+    </div>
+    </main>
+  </div> <!-- ends container -->
+{% endblock %}

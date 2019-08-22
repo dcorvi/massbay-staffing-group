@@ -1,0 +1,190 @@
+/* body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: serif;
+} */
+
+body {
+  font-family: serif;
+  /* font-size: 14px; */
+  /* line-height: 1.428; */
+  /* color: #333; */
+  /* background-color: #fff; */
+  /* background-image: url(../images/nza_background.jpg); */
+}
+
+.navbar {
+    padding:.2rem .2rem !important;
+}
+
+.navbar-nav {
+    float:none;
+    margin:0 auto;
+    display: block;
+    text-align: center;
+}
+
+.navbar-nav > li {
+    display: inline-block;
+    float:none;
+    /* padding-left: 20px; */
+    padding-right: 5vw;
+}
+
+.logo {
+  float:none;
+  margin:0 auto;
+  display: block;
+  text-align: center;
+
+}
+
+.slogan {
+  font-size: 59px;
+  text-align: center;
+  font-family: serif;
+  color: green;
+}
+
+.carousel-indicators > li {
+  border-radius: 50%;
+}
+
+.introimg {
+  height: auto;
+  width: auto;
+  margin: 0 auto !important;
+}
+
+.container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.sidebar {
+  /* background: url(../images/nav_side.jpg); */
+  width: 100%;
+  padding: 10px;
+  color: white;
+  font-size: 16px;
+  /* overflow-y: scroll; */
+  text-align: left;
+}
+
+.links {
+  color: #2C3E50;
+  font-weight: bold;
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+ol > li {
+    padding: 15px 0px;
+
+}
+
+.banner {
+  display: block;
+  margin: 50px auto;
+  width: 100%;
+}
+
+.card {
+  margin-top: 50px;
+  padding: 20px;
+}
+
+.card-img {
+  display: block;
+  margin: 15px auto;
+  width: 100%;
+}
+
+.card-title {
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.card-subtitle {
+  font-size: 90%;
+  font-style: italic;
+}
+
+.card>button {
+  display: block;
+  margin: 15px auto;
+  width: 80%;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  font-size: 85%;
+}
+
+.pic {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+.profile {
+  width: 100%;
+  margin-top: 10px;
+  /* border: 5px; */
+  /* border-style: ridge; */
+  outline: 5px #e8e8e8 solid;
+}
+
+.emaillink{
+  /* display: block; */
+  /* display: inline-block;
+  max-width: 50px;
+  vertical-align: middle; */
+  /* position: relative; */
+}
+
+.homeimg {
+  max-width: 100%;
+  margin-top: 6px;
+  border: 5px;
+  /* border-style: ridge; */
+}
+
+.date {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-style: italic;
+}
+
+.author {
+  font-size: 14px;
+  font-style: italic;
+}
+
+.abouttitle {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.contactinfo {
+  max-width: 500px;
+}
+
+.contactform {
+  margin-top: 20px;
+}
+
+
+footer {
+  background-color: #343a40!important;
+}
+
+footer p {
+  color: rgba(255,255,255,.5);
+  padding: 20px;
+}

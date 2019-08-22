@@ -1,0 +1,35 @@
+{% import 'bootstrap/wtf.html' as wtf %}
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ super() }} - Contact
+{% endblock %}
+
+{% block app_content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 col-xs-8 offset-xs-2">
+      <h1>Contact Information</h1>
+        <p class="contactinfo">
+    For more information on available positions, or if you have a position you would like to fill, please fill out the form below </p>
+      <p>
+      Or call Dennis Corvi directly at <a href="tel:+16179809410">(617) 980-9410</a>
+      </p>
+
+      <div class="row">
+        <div class="col-md-8 offset-md-1 contactform">
+
+          <!-- - displays error messages -->
+          {% for fieldName, errorMessages in form.errors.items() %}
+            {% for error in errorMessages %}
+            <p class="error">{{ fieldName.title() }}: {{ error }}</p>
+            {% endfor %}
+          {% endfor %}
+
+          {{ wtf.quick_form( form ) }}
+        </div> <!-- ends col -->
+      </div> <!-- ends row -->
+    </div> <!-- col 12 -->
+  </div> <!-- ends row -->
+</div> <!-- ends container -->
+{% endblock %}

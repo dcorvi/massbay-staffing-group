@@ -1,0 +1,16 @@
+Dear Dennis Corvi,
+
+You have been sent contact information from {{ contact.name }}.
+
+Date: {{ contact.date.strftime('%m-%d-%Y') }}
+Time: {{ contact.date.strftime('%I:%M:%S %p %z') }}
+
+Name: {{ contact.name }}
+
+Email: {{ contact.email }}
+
+Phone: {{ contact.phone }}
+
+Message: {{ contact.message }}
+
+Message ID: {{ contact.id }}

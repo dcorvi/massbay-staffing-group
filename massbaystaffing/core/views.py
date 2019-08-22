@@ -16,7 +16,7 @@ def index():
     return render_template('index.html', title='Index')
 
 
-@core.route('/newsletter')
+@core.route('/newsletter', methods=['GET', 'POST'])
 def newsletter():
     form = SubscriberForm()
 
@@ -30,10 +30,15 @@ def newsletter():
         db.session.commit()
 
         # send email
-        newsletter_confirm_email(contact)
-        flash(f'Thanks for joining the Massbay Staffing Newsletter! A confirmation has been sent to {form.email.data}', "info")
+        newsletter_confirm_email(subscriber)
+        flash(f'Thanks for joining the Massbay Staffing Newsletter! A confirmation email has been sent to {form.email.data}', "info")
         return redirect(url_for('core.newsletter'))
-    return render_template('newsletter.html', title='Newsletter')
+
+    elif not form.validate_on_submit() and request.method != 'GET':
+        flash("It looks like this email is already signed up. Please choose another", "warning")
+        return redirect(url_for('core.newsletter'))
+
+    return render_template('newsletter.html', form=form, title='Newsletter')
 
 @core.route('/positions')
 def positions():

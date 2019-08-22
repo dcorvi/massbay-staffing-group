@@ -22,8 +22,8 @@ def send_email(subject, sender, recipients, text_body, html_body):
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
     send_email(
-        subject = 'Reset Password',
-        sender = ('Massbay Staffing', app.config['ADMINS'][0]),
+        subject = 'Massbay Staffing - Password Reset',
+        sender = ('Massbay Staffing Group', app.config['ADMINS'][0]),
         recipients = [user.email],
         text_body = render_template('email/reset_password.txt', user=user, token=token),
         html_body = render_template('email/reset_password.html',
@@ -32,11 +32,11 @@ def send_password_reset_email(user):
 
 def newsletter_confirm_email(subscriber):
     send_email(
-        'The Massbay Staffing Newsletter',
-        sender = ('Massbay Staffing', app.config['ADMINS'][0]),
+        'The Massbay Staffing Group Newsletter',
+        sender = ('Massbay Staffing Group', app.config['ADMINS'][0]),
         recipients = [subscriber.email],
-        text_body = render_template('email/vip_confirm_email.txt', subscriber=subscriber),
-        html_body = render_template('email/vip_confirm_email.html', subscriber=subscriber)
+        text_body = render_template('email/newsletter_confirm_email.txt', subscriber=subscriber),
+        html_body = render_template('email/newsletter_confirm_email.html', subscriber=subscriber)
     )
 
 
@@ -52,7 +52,7 @@ def send_email2(subject, sender, recipients, cc, text_body, html_body):
 def send_contact_email(contact):
     send_email2(
         'Contact',
-        sender = ('Massbay Staffing', app.config['ADMINS'][0]),
+        sender = ('Massbay Staffing Group', app.config['ADMINS'][0]),
         recipients = [app.config['ADMINS'][0]],
         cc = [contact.email],
         text_body = render_template('email/contact_email.txt', contact=contact),

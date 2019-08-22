@@ -18,6 +18,3 @@ class JobForm(FlaskForm):
     post_website = RadioField('For which website:',choices=[("1", 'Massbay Staffing'), ("2", 'Job board webite'), ("3", 'Both'), ("0", '[blank]')], validators=[Optional()])
     # job_post_date = StringField('Posting Date:', render_kw={"placeholder": "YYYY-MM-DD"})
     # submit = SubmitField()
-
-    class SubscriberForm(FlaskForm):
-        email = StringField('E-mail', validators=[DataRequired(), Email(message='Not a valid email format'), Length(max=64, message='email length must be less than 64 characters')])

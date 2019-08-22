@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block title %}
   {{ super() }} - Newsletter
@@ -30,6 +31,8 @@
         <div class="sidebar">
           <h5 class="links">Helpful Links</h5>
           <p>
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Sign up for the Newsletter</button>
+            <br><br>
             <a href="http://www.careerbuilder.com/Article/CB-2959-Resumes-Cover-Letters-Qualifications-versus-duties-Why-knowing-the-difference-matters/?siteid=cbhandle&utm_source=buffer&buffer_share=9b92c">Qualifications versus Duties</a>
             <br><br>
             <a href="http://www.careerbuilder.com/Article/CB-3233-Job-Search-Strategies-3-myths-about-older-job-seekers/?siteid=cbhandle&utm_source=buffer&buffer_share=a04ca">3 Myths of Older Job Seekers</a>
@@ -125,10 +128,34 @@
     </div>
   </div>
 
-
-
 </div>
       </div>
     </div>
   </div>
+
+  <!-- The modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sign up for the Massbay Staffing Newsletter</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ wtf.quick_form( form ) }}
+          {% for fieldName, errorMessages in form.errors.items() %}
+            {% for error in errorMessages %}
+            <p class="error">{{ fieldName.title() }}: {{ error }}</p>
+            {% endfor %}
+          {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}

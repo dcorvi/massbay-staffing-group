@@ -1,5 +1,5 @@
 
-Thanks for joining the Massbay Staffing Newsletter!
+Thanks for joining the Massbay Staffing Group Newsletter!
 
 
 
@@ -10,4 +10,4 @@ This is to confirm your addition to the mailing list using {{ subscriber.email }
 Thanks for your interest!
 
 Sincerely,
-The Massbay Staffing Team
+The Massbay Staffing Group

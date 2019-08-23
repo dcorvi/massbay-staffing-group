@@ -110,13 +110,14 @@ class Job(db.Model):
     job_requirements = db.Column(db.Text)
     job_status = db.Column(db.String(100))
     job_sector = db.Column(db.String(500))
+    job_type = db.Column(db.String(500))
     post_website = db.Column(db.Integer)
     job_posting_link = db.Column(db.String(500))
     # job_post_date = db.Column(db.DateTime, default=None)
     # job_post_date = db.Column(db.DateTime, default=datetime.now().date())
     job_creation_date = db.Column(db.DateTime,nullable=False,default=datetime.now())
 
-    def __init__(self,job_title,company,city,state,zip,job_description,job_requirements,job_status,job_sector,post_website,job_posting_link,user_id):
+    def __init__(self,job_title,company,city,state,zip,job_description,job_requirements,job_status,job_sector,job_type,post_website,job_posting_link,user_id):
         self.job_title = job_title
         self.company = company
         self.city = city
@@ -126,6 +127,7 @@ class Job(db.Model):
         self.job_requirements = job_requirements
         self.job_status = job_status
         self.job_sector = job_sector
+        self.job_type = job_type
         self.post_website = post_website
         self.job_posting_link = job_posting_link
         self.user_id = user_id

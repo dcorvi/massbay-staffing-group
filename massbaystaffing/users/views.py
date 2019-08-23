@@ -4,7 +4,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from massbaystaffing import db
 from massbaystaffing.users.forms import LoginForm, RegisterForm, UpdateUserForm, ResetPasswordRequestForm, ResetPasswordForm, PostForm
-from massbaystaffing.models import User, BlogPost, Job
+from massbaystaffing.models import User, BlogPost, Job, ContactMessage, Subscriber
 from massbaystaffing.email import send_password_reset_email
 import time
 
@@ -88,7 +88,7 @@ def profile(username=''):
 def logout():
     logout_user()
     # flash('You have been logged out!')
-    return redirect(url_for('users.login'))
+    return redirect(url_for('core.index'))
 
 
 # account (update UserForm)
@@ -100,9 +100,12 @@ def account():
     form1 = UpdateUserForm()
     user = current_user.username
     page = request.args.get('page', 1, type=int)
-    # blog_posts = BlogPost.query.order_by(BlogPost.date.desc()).paginate(page=page, per_page=5)
-    job_posts = Job.query.order_by(Job.id.asc()).paginate(page=page, per_page=5)
+    page1 = request.args.get('page', 1, type=int)
 
+    job_posts = Job.query.order_by(Job.id.asc()).paginate(page=page, per_page=5)
+    blog_posts = BlogPost.query.order_by(BlogPost.date.desc()).paginate(page=page1, per_page=5)
+    contacts = ContactMessage.query.order_by(ContactMessage.id.asc()).paginate(page=page, per_page=5)
+    subscribers = Subscriber.query.order_by(Subscriber.id.asc()).paginate(page=page, per_page=5)
 
     if form1.validate_on_submit():
         current_user.username = form1.username.data
@@ -115,7 +118,7 @@ def account():
         form1.username.data = current_user.username
         form1.email.data = current_user.email
 
-    return render_template('account.html', form1=form1, title="Account", job_posts=job_posts)
+    return render_template('account.html', form1=form1, title="Account", job_posts=job_posts, blog_posts=blog_posts, subscribers=subscribers, contacts=contacts)
 
 @users.route("/<username>")
 def user_posts(username):
@@ -167,3 +170,54 @@ def reset_password(token):
         return redirect(url_for('users.login'))
 
     return render_template('reset_password_request.html', form=form)
+
+@users.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+
+    form = LoginForm()
+    form2 = RegisterForm()
+
+    if form2.validate_on_submit():
+        user = User(first_name = form2.first_name.data,
+                    last_name = form2.last_name.data,
+                    username = form2.username.data,
+                    email = form2.email.data,
+                    password = form2.password.data)
+
+        db.session.add(user)
+        db.session.commit()
+
+        # need to add email confirmation
+        flash(f'Thanks for registering!', "success")
+        return redirect(url_for('users.admin_login'))
+
+    if form.validate_on_submit():
+        # query the database for the user trying to log in
+        user = User.query.filter_by(email=form.email.data).first()
+
+        # if user doesn't exist, reload the page and flash message
+        # or if the password doesn't match the password stored
+        if user is None or not user.check_password(form.password.data):
+            flash('Credentials are incorrect.', "error")
+            return redirect(url_for('users.admin_login'))
+
+        if user.check_password(form.password.data) and user is not None:
+
+            login_user(user)
+            flash('Admin Logged In', "info")
+
+            next = request.args.get('next')
+
+            if next ==None or not next[0]=='/':
+                next = url_for('users.account')
+
+            return redirect(next)
+
+            # demo mode
+    elif request.method == 'GET':
+        form.email.data = 'dmcorvi2@gmail.com'
+        form.password.data = 'abc'
+
+
+
+    return render_template('admin_login.html', title='Admin Login', title2='Admin Register', form=form, form2=form2)

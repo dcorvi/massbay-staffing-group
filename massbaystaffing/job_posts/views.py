@@ -4,6 +4,7 @@ from flask_login import current_user,login_required
 from massbaystaffing import db
 from massbaystaffing.models import Job
 from massbaystaffing.job_posts.forms import JobForm
+# import re
 
 job_posts = Blueprint('job_posts',__name__, template_folder='templates/job_posts')
 
@@ -17,7 +18,11 @@ def create_job():
 
     if form.validate_on_submit():
 
-        job_post = Job(job_title=form.job_title.data, company=form.company.data, city=form.city.data, state=form.state.data, zip=form.zip.data, job_description=form.job_description.data, job_requirements=form.job_requirements.data, job_status=form.job_status.data, job_sector=form.job_sector.data, post_website=form.post_website.data, job_posting_link=form.job_posting_link.data, user_id=current_user.id)
+        # fix job requirements if there are new lines
+        new_requirements = form.job_requirements.data
+        new_requirements = '<br /><br />'.join(new_requirements.splitlines())
+
+        job_post = Job(job_title=form.job_title.data, company=form.company.data, city=form.city.data, state=form.state.data, zip=form.zip.data, job_description=form.job_description.data, job_requirements=new_requirements, job_status=form.job_status.data, job_sector=form.job_sector.data,job_type=form.job_type.data, post_website=form.post_website.data, job_posting_link=form.job_posting_link.data, user_id=current_user.id)
 
         db.session.add(job_post)
         db.session.commit()
@@ -40,7 +45,7 @@ def job_post(job_post_id):
     return render_template('job_post.html',title='Job Post',post=job_post
     )
 
-# BLOG POST (UPDATE)
+# JOB POST (UPDATE)
 @job_posts.route("/job-<int:job_post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update(job_post_id):
@@ -51,15 +56,19 @@ def update(job_post_id):
 
     form = JobForm()
     if form.validate_on_submit():
+        # descr = descr.replace(/(\r\n|\n|\r)/gm, " ");
+        new_requirements = form.job_requirements.data
+        new_requirements = '<br /><br />'.join(new_requirements.splitlines())
         job_post.job_title = form.job_title.data
         job_post.company = form.company.data
         job_post.city = form.city.data
         job_post.state = form.state.data
         job_post.zip = form.zip.data
         job_post.job_description = form.job_description.data
-        job_post.job_requirements = form.job_requirements.data
+        job_post.job_requirements = new_requirements
         job_post.job_status = form.job_status.data
         job_post.job_sector = form.job_sector.data
+        job_post.job_type = form.job_type.data
         job_post.post_website = form.post_website.data
         job_post.job_posting_link = form.job_posting_link.data
         db.session.commit()
@@ -80,6 +89,7 @@ def update(job_post_id):
         form.job_requirements.data = job_post.job_requirements
         form.job_status.data= job_post.job_status
         form.job_sector.data= job_post.job_sector
+        form.job_type.data= job_post.job_type
         form.post_website.data= job_post.post_website
         form.job_posting_link.data = job_post.job_posting_link
     return render_template('create_job.html', button='Update Job', title='Update Job', form=form)

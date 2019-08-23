@@ -1,3 +1,4 @@
+# massbaystaffing/blog_posts/views.py
 from flask import render_template,url_for,flash, redirect,request,Blueprint
 from flask_login import current_user,login_required
 from massbaystaffing import db
@@ -28,7 +29,7 @@ def create_post():
     elif not form.validate_on_submit() and request.method != 'GET':
         flash("Fix fields", "warning")
 
-    return render_template('create_post.html',form=form, title="Create Post")
+    return render_template('create_post.html',form=form, button='Add Blog Post', title="Create Post")
 
 
 # int: makes sure that the blog_post_id gets passed as in integer
@@ -38,9 +39,7 @@ def create_post():
 def blog_post(blog_post_id):
     # grab the requested blog post by id number or return 404
     blog_post = BlogPost.query.get_or_404(blog_post_id)
-    return render_template('blog_post.html',title=blog_post.title,
-                            date=blog_post.date,post=blog_post
-    )
+    return render_template('blog_post.html', title=blog_post.title, date=blog_post.date, post=blog_post)
 
 # BLOG POST (UPDATE)
 @blog_posts.route("/blog-<int:blog_post_id>/update", methods=['GET', 'POST'])
@@ -63,12 +62,11 @@ def update(blog_post_id):
 
     elif not form.validate_on_submit() and request.method != 'GET':
         flash("Fix fields", "warning")
-            
+
     elif request.method == 'GET':
         form.title.data = blog_post.title
         form.text.data = blog_post.text
-    return render_template('create_post.html', title='Update',
-                           form=form)
+    return render_template('create_post.html', button='Update Blog', title='Update', form=form)
 
 # BLOG POST (DELETE)
 @blog_posts.route("/blog-<int:blog_post_id>/delete", methods=['POST'])
@@ -81,3 +79,27 @@ def delete_post(blog_post_id):
     db.session.commit()
     flash('Post has been deleted', "info")
     return redirect(url_for('core.blog'))
+
+# BLOG POST (DELETE)
+@blog_posts.route("/blog-<int:blog_post_id>/delete1", methods=['POST'])
+@login_required
+def delete_post1(blog_post_id):
+    blog_post = BlogPost.query.get_or_404(blog_post_id)
+    if blog_post.author != current_user:
+        abort(403)
+    db.session.delete(blog_post)
+    db.session.commit()
+    flash('Blog post deleted', "info")
+    return redirect(url_for('core.blog'))
+
+# JOB POST (DELETE)
+@blog_posts.route("/blog-<int:blog_post_id>/delete2", methods=['POST'])
+@login_required
+def delete_post2(blog_post_id):
+    blog_post = BlogPost.query.get_or_404(blog_post_id)
+    if blog_post.author != current_user:
+        abort(403)
+    db.session.delete(blog_post)
+    db.session.commit()
+    flash('Blog post deleted', "info")
+    return redirect(url_for('users.account'))

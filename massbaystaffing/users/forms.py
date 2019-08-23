@@ -40,12 +40,12 @@ class UpdateUserForm(FlaskForm):
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
-        if user is not None:
+        if user is not None and user.username != username.data:
             raise ValidationError('Please use a different username.')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
-        if user is not None:
+        if user is not None and email.data != email.data:
             raise ValidationError('Please use a different email address.')
 
 

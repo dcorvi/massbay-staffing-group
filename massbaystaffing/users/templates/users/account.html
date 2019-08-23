@@ -7,8 +7,6 @@
     <h1 >Account: {{current_user.username}}</h1>
     <p>{{ current_user.email }}</p>
 
-
-
   </div>
 </div>
 
@@ -16,51 +14,22 @@
   <div class="col-md-2">
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
-      <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Edit Profile</a>
+      <a class="nav-link active" id="v-pills-jobs-tab" data-toggle="pill" href="#v-pills-jobs" role="tab" aria-controls="v-pills-jobs" aria-selected="true">Jobs</a>
       <a class="nav-link" id="v-pills-blogs-tab" data-toggle="pill" href="#v-pills-blogs" role="tab" aria-controls="v-pills-blogs" aria-selected="false">Blogs</a>
-      <a class="nav-link" id="v-pills-jobs-tab" data-toggle="pill" href="#v-pills-jobs" role="tab" aria-controls="v-pills-jobs" aria-selected="true">Jobs</a>
+      <a class="nav-link" id="v-pills-subscriber-tab" data-toggle="pill" href="#v-pills-subscriber" role="tab" aria-controls="v-pills-subscriber" aria-selected="false">Subscribers</a>
+      <a class="nav-link" id="v-pills-contact-tab" data-toggle="pill" href="#v-pills-contact" role="tab" aria-controls="v-pills-contact" aria-selected="false">Contact Info</a>
       <a class="nav-link" id="v-pills-newsletter-tab" data-toggle="pill" href="#v-pills-newsletter" role="tab" aria-controls="v-pills-newsletter" aria-selected="true">Send Newsletter</a>
       <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
-    </div> <!-- end tab selection -->
+    </div> <!-- end tab selection content -->
   </div> <!-- end col-md-2 -->
+
+
+<!-- tab content -->
   <div class="col-md-6">
 <div class="tab-content" id="v-pills-tabContent">
-
-  <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-      <form  method="POST" action="" enctype="multipart/form-data">
-        {{ form1.hidden_tag() }}
-        <div class="form-group">
-          {{ form1.username.label }}
-          {{form1.username(class="form-control")  }}
-          {% for error in form1.username.errors %}
-          <span style="color: red;">{{ error }}</span>
-          {% endfor %}
-        </div>
-        <div class="form-group">
-          {{ form1.email.label }}
-          {{form1.email(class="form-control")  }}
-          {% for error in form1.email.errors %}
-          <span style="color: red;">{{ error }}</span>
-          {% endfor %}
-        </div>
-        <div class="form-group">
-          {{ form1.submit(class="btn btn-outline-info") }}
-        </div>
-      </form>
-  </div>
-
-  <div class="tab-pane fade" id="v-pills-blogs" role="tabpanel" aria-labelledby="v-pills-blogs-tab">
-    View and edit button on all blogs: Coming soon..
-
-  </div>
-
-  <div class="tab-pane fade" id="v-pills-jobs" role="tabpanel" aria-labelledby="v-pills-jobs-tab">
-    Add edit/delete jobs form: Coming soon..<br><br>
-
-    <div class="container">
-      <div class="row justify-content-md-center">
-        <div class="col-md-7">
-
+  <div class="tab-pane fade show active" id="v-pills-jobs" role="tabpanel" aria-labelledby="v-pills-jobs-tab">
+    <h4><strong>View All Job Posts</strong></h4> <br>
+      {% if job_posts.items %}
       <table class="table table-dark">
         <thead>
           <tr>
@@ -71,11 +40,12 @@
             <th scope="col">State</th>
             <th scope="col">Zip</th>
             <th scope="col">Job Description</th>
+            <th scope="col">Creation Date</th>
+            <th scope="col">Edit Job</th>
             <th scope="col">Delete Job</th>
           </tr>
         </thead>
         <tbody>
-      {% if job_posts.items %}
         {% for post in job_posts.items %}
             <tr>
               <th scope="row">{{ post.id }}</th>
@@ -85,16 +55,18 @@
               <td>{{ post.state }}</td>
               <td>{{ post.zip }}</td>
               <td>{{ post.job_description[:20] }}..</td>
-              <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_modal">Delete</button></td>
+              <td>{{ post.job_creation_date.strftime('%m/%d/%y') }}</td>
+              <td><a class="btn btn-secondary" href="{{ url_for('job_posts.update', job_post_id=post.id) }}">Edit</a></td>
+              <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_modal_job">Delete</button></td>
             </tr>
             <!-- Modal for Pop Up-->
             {# https://getbootstrap.com/docs/4.1/components/modal/ #}
             {# Notice how the link with the id to the button above! #}
-            <div class="modal" tabindex="-1" role="dialog" id="del_modal">
+            <div class="modal" tabindex="-1" role="dialog" id="del_modal_job">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Delete job?</h5>
+                    <h5 class="modal-title">Delete job post?</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -112,7 +84,7 @@
                 </div>
               </div>
             </div> <!-- end model -->
-       {% endfor %}
+       {% endfor %} <!-- end loop through all job posts -->
          </tbody>
        </table>
         <br>
@@ -122,49 +94,279 @@
               {% if job_posts.page == page_num %}
               <li class="page-item disabled">
                 <a class="page-link" href="{{ url_for('users.account', page=page_num) }}">{{ page_num }}</a></li>
-
               {% else %}
                 <li class="page-item"><a class="page-link" href="{{ url_for('users.account', page=page_num) }}">{{ page_num }}</a></li>
-                {% endif %}
-        {% endfor %}
+                {% endif %} <!-- end job posts per page -->
+        {% endfor %} <!-- end for page_num in job posts -->
       </nav>
-       {% else %}
+       {% else %} <!-- else if there are no job posts -->
        <h4>No jobs added</h4><br>
           {% if current_user.is_authenticated %}
-          <h5><a class="btn btn-outline-info" href="{{ url_for('job_posts.create_job') }}">Add job</a></h5>
-        {% else %}
-        {% endif %}
-       {% endif %}
-
-
-      </div> <!-- end row -->
-      </div> <!-- end container -->
+          <h5><a class="btn btn-outline-info" href="{{ url_for('job_posts.create_job') }}">Add Job Posting</a></h5>
+          {% endif %} <!-- end if user isnt authenticated -->
+       {% endif %} <!-- end if there are no job posts -->
   </div> <!-- end tab contents for jobs -->
 
+
+  <div class="tab-pane fade" id="v-pills-blogs" role="tabpanel" aria-labelledby="v-pills-blogs-tab">
+        <h4><strong>View All Blog Posts</strong></h4> <br>
+    {% if blog_posts.items %}
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Blog Title</th>
+          <th scope="col">Text</th>
+          <th scope="col">Date Created</th>
+          <th scope="col">Edit Post</th>
+          <th scope="col">Delete Post</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for post in blog_posts.items %}
+          <tr>
+            <th scope="row">{{ post.id }}</th>
+            <td>{{ post.title }}</td>
+            <td>{{ post.text[:20] }}..</td>
+            <td>{{ post.date.strftime('%m/%d/%y - %I:%M%p') }}</td>
+            <td><a class="btn btn-secondary" href="{{ url_for('job_posts.update', job_post_id=post.id) }}">Edit</a></td>
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_modal_blog">Delete</button></td>
+          </tr>
+          <!-- Modal for Pop Up-->
+          {# https://getbootstrap.com/docs/4.1/components/modal/ #}
+          {# Notice how the link with the id to the button above! #}
+          <div class="modal" tabindex="-1" role="dialog" id="del_modal_blog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Delete blog post?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Are you sure you want to delete this blog post titled:  <strong>{{ post.title }}</strong>?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                  <form action="{{ url_for('blog_posts.delete_post2', blog_post_id=post.id) }}" method="POST">
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end model -->
+     {% endfor %} <!-- end loop through all blog posts -->
+       </tbody>
+     </table>
+      <br>
+     <nav aria-label="Page navigation example">
+       <ul class="pagination justify-content-center">
+         {% for page_num in blog_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if blog_posts.page == page_num %}
+            <li class="page-item disabled">
+              <a class="page-link" href="{{ url_for('users.account', page1=page_num) }}">{{ page_num }}</a></li>
+
+            {% else %}
+              <li class="page-item"><a class="page-link" href="{{ url_for('users.account', page=page_num) }}">{{ page_num }}</a></li>
+              {% endif %} <!-- end blog posts per page -->
+      {% endfor %} <!-- end for page_num in blog posts -->
+    </nav>
+     {% else %} <!-- else if there are no blog posts -->
+     <h4>No blog posts added</h4><br>
+        {% if current_user.is_authenticated %}
+        <h5><a class="btn btn-outline-info" href="{{ url_for('blog_posts.create_post') }}">Add Blog Post</a></h5>
+        {% endif %} <!-- end if user isnt authenticated -->
+     {% endif %} <!-- end if there are no blog posts -->
+  </div> <!-- end tab contents for blogs -->
+
+
+  <div class="tab-pane fade" id="v-pills-subscriber" role="tabpanel" aria-labelledby="v-pills-subscriber-tab">
+    <h4><strong>Newsletter Subscribers</strong></h4> <br>
+    View Newsletter subscribers <br><br>
+    {% if subscribers.items %}
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Email</th>
+          <th scope="col">Date Subscribed</th>
+          <th scope="col">Delete Subscriber</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for post in subscribers.items %}
+          <tr>
+            <th scope="row">{{ post.id }}</th>
+            <td>{{ post.email }}</td>
+            <td>{{ post.date.strftime('%m/%d/%y - %I:%M%p') }}</td>
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_modal_subscriber">Delete</button></td>
+          </tr>
+          <!-- Modal for Pop Up-->
+          {# https://getbootstrap.com/docs/4.1/components/modal/ #}
+          {# Notice how the link with the id to the button above! #}
+          <div class="modal" tabindex="-1" role="dialog" id="del_modal_subscriber">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Delete subscriber?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Are you sure you want to delete subscriber: <strong>{{ post.email }}</strong>?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                  <form action="{{ url_for('core.delete_subscriber', subscriber_id=post.id) }}" method="POST">
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end model -->
+     {% endfor %} <!-- end loop through all subscribers -->
+       </tbody>
+     </table>
+      <br>
+     <nav aria-label="Page navigation example">
+       <ul class="pagination justify-content-center">
+         {% for page_num in blog_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if blog_posts.page == page_num %}
+            <li class="page-item disabled">
+              <a class="page-link" href="{{ url_for('users.account', page1=page_num) }}">{{ page_num }}</a></li>
+
+            {% else %}
+              <li class="page-item"><a class="page-link" href="{{ url_for('users.account', page=page_num) }}">{{ page_num }}</a></li>
+              {% endif %} <!-- end subscribers per page -->
+      {% endfor %} <!-- end for page_num in subscibers -->
+    </nav>
+     {% else %} <!-- else if there are no subscibers -->
+     <h4>No subscribers</h4><br>
+        <h5><a class="btn btn-outline-info" href="{{ url_for('core.newsletter') }}">Go to Newsletter Page</a></h5>
+     {% endif %} <!-- end if there are no subscibers-->
+  </div> <!-- end tab contents for subscribers -->
+
+  <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
+    <h4><strong>Contact Info Sent</strong></h4> <br>
+    View sent contact information <br><br>
+    {% if contacts.items %}
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Message</th>
+          <th scope="col">Recieved</th>
+          <th scope="col">Full Message</th>
+          <th scope="col">Resend to Email</th>
+          <th scope="col">Delete Message</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for post in contacts.items %}
+          <tr>
+            <th scope="row">{{ post.id }}</th>
+            <td>{{ post.name }}</td>
+            <td>{{ post.email }}</td>
+            <td>{{ post.phone }}</td>
+            <td>{{ post.message[:20] }}..</td>
+            <td>{{ post.date.strftime('%m/%d/%y %I:%M%p') }}</td>
+            <td><button type="button" class="btn btn-warning" data-container="body" data-toggle="popover" title="Full Message:" data-placement="bottom" data-content="{{ post.message }}">View</button></td>
+            <td><a class="btn btn-info" href="{{ url_for('core.contact_resend', message_id=post.id) }}">Resend</a></td>
+            <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_modal_message">Delete</button></td>
+          </tr>
+          <!-- Modal for Pop Up-->
+          {# https://getbootstrap.com/docs/4.1/components/modal/ #}
+          {# Notice how the link with the id to the button above! #}
+          <div class="modal" tabindex="-1" role="dialog" id="del_modal_message">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Delete message?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Are you sure you want to delete this message from:  <strong>{{ post.email }}</strong>?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                  <form action="{{ url_for('core.delete_contact_mess', message_id=post.id) }}" method="POST">
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end model -->
+     {% endfor %} <!-- end loop through all messages -->
+       </tbody>
+     </table>
+      <br>
+     <nav aria-label="Page navigation example">
+       <ul class="pagination justify-content-center">
+         {% for page_num in contacts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if contacts.page == page_num %}
+            <li class="page-item disabled">
+              <a class="page-link" href="{{ url_for('users.account', page1=page_num) }}">{{ page_num }}</a></li>
+
+            {% else %}
+              <li class="page-item"><a class="page-link" href="{{ url_for('users.account', page=page_num) }}">{{ page_num }}</a></li>
+              {% endif %} <!-- end messages per page -->
+      {% endfor %} <!-- end for page_num in messages -->
+    </nav>
+     {% else %} <!-- else if there are no messages -->
+     <h4>No contact info has been sent to you</h4><br>
+        <h5><a class="btn btn-outline-info" href="{{ url_for('core.contact') }}">Go to Contact Page</a></h5>
+     {% endif %} <!-- end if there are messages -->
+  </div> <!-- end tab contents for contact info -->
+
   <div class="tab-pane fade" id="v-pills-newsletter" role="tabpanel" aria-labelledby="v-pills-newsletter-tab">
-    Send newsletter form: Coming soon..
-  </div>
+        <h4><strong>Send Out the Newsletter</strong></h4> <br>
+    Send a newsletter to subscribers form: <br><br>
+    <p>Coming soon...</p>
+  </div> <!-- end tab contents for newsletter -->
 
   <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+        <h4><strong>Change settings</strong></h4> <br>
+        Update account information <br><br>
 
-    Change password form + (?): Coming soon..
-    <div class="row">
-      <div class="col-md-4 offset-md-4">
-
-        <!-- {% if password_checker == True %}
-          <h4>The password you input is correct</h4>
-        {% elif password_checker == False %}
-          <h4>The password you input is not correct</h4>
-        {% endif %} -->
-      </div> <!-- end col-md-4 -->
-    </div> <!-- end row -->
+        <form  method="POST" action="" enctype="multipart/form-data">
+          {{ form1.hidden_tag() }}
+          <div class="form-group">
+            {{ form1.username.label }}
+            {{form1.username(class="form-control")  }}
+            {% for error in form1.username.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="form-group">
+            {{ form1.email.label }}
+            {{form1.email(class="form-control")  }}
+            {% for error in form1.email.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="form-group">
+            {{ form1.submit(class="btn btn-outline-info") }}
+          </div>
+        </form>
+          <br><br>
+            Change password form + (?): Coming soon..
 
   </div> <!-- end tab -->
-</div> <!-- end tab contents -->
+</div> <!-- end tab contents for settings -->
 
   </div> <!-- end col-md-6 -->
     </div> <!-- end row -->
-</div>
+</div> <!-- end page container -->
 
 
 

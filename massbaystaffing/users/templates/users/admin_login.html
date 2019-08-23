@@ -1,0 +1,42 @@
+{% import 'bootstrap/wtf.html' as wtf %}
+{% extends 'base.html' %}
+
+
+{% block app_content %}
+  <div class="container">
+      <div class="row">
+        
+      <div class="col-md-6 col-xs-8">
+          <h1>{{ title }}</h1>
+          <!-- - displays error messages -->
+          {% for fieldName, errorMessages in form.errors.items() %}
+            {% for error in errorMessages %}
+            <p class="error">{{ fieldName.title() }}: {{ error }}</p>
+            {% endfor %}
+          {% endfor %}
+
+          {{ wtf.quick_form( form ) }}
+          <br>
+          <div class="row">
+            <div class="col-md-4 offset-md-4 col-xs-8 offset-xs-2">
+              <p> Forgot your password? <a href="{{ url_for('users.reset_password_request')}}">Click to Reset It </a> </p>
+            </div>
+          </div>
+        </div> <!-- ends col -->
+        <div class="col-md-6 col-xs-8 ">
+            <h1>{{ title2 }}</h1>
+            <!-- - displays error messages -->
+            {% for fieldName, errorMessages in form2.errors.items() %}
+              {% for error in errorMessages %}
+              <p class="error">{{ fieldName.title() }}: {{ error }}</p>
+              {% endfor %}
+            {% endfor %}
+
+            {{ wtf.quick_form( form2 ) }}
+            <br>
+          </div> <!-- ends col -->
+    </div> <!-- ends row -->
+
+  </div>
+
+{% endblock %}

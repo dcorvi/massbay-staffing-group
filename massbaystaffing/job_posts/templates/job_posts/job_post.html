@@ -11,8 +11,9 @@
     <p>Job status: {{post.job_status}}</p>
     <p>Job sector: {{post.job_sector}}</p>
     <p>Description: {{post.job_description}}</p>
-    <br><br>
-    <p>Job Requirements: {{post.job_requirements}}</p>
+    <br />
+    <p>Job Requirements:<br /><br />
+      {% autoescape off %} {{post.job_requirements}}{% endautoescape %}</p>
     <br><br>
     <p>Link to job: <a href="{{post.job_posting_link}}">{{post.job_posting_link}}</a></p>
     <p>Job posted by: <strong>{{post.jobposter.username}}</strong></p>
@@ -53,7 +54,7 @@
       </div>
     </div>
   </div>
-</div> <!-- end col-md-8 -->
+</div> <!-- end col-md-12 -->
 </div> <!-- end row -->
 </div> <!-- end container -->
 

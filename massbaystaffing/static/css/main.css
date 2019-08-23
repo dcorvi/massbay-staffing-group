@@ -6,7 +6,9 @@
 } */
 
 body {
-  font-family: serif;
+  font-family:Helvetica, Arial, sans-serif;
+	/* margin: 0 !important;
+  padding: 0 !important; */
   /* font-size: 14px; */
   /* line-height: 1.428; */
   /* color: #333; */
@@ -14,8 +16,49 @@ body {
   /* background-image: url(../images/nza_background.jpg); */
 }
 
+#social-media-icons {
+height:50px;
+width: 150px;
+background-color: #f1f1f1;
+position: fixed;
+bottom: 2vw;
+left: 2vw;
+overflow: auto;
+}
+
+/* social media icons */
+.fa:hover {
+  opacity: 0.3;
+}
+
+.fa {
+width:40px;
+height:40px;
+margin:5px;
+float:right;
+
+}
+
+
+div.static {
+  position: static;
+  border: 3px solid #73AD21;
+}
+
+.fixed {
+  position: fixed;
+  top: 16vw;
+  right: 11vw;
+}
+
 .navbar {
     padding:.2rem .2rem !important;
+}
+
+.navbar-dark .navbar-nav .show>.nav-link, .navbar-dark .navbar-nav .active>.nav-link, .navbar-dark .navbar-nav .nav-link.show, .navbar-dark .navbar-nav .nav-link.active {
+    font-weight: bold !important;
+    /* color: rgb(15, 209, 171) !important; */
+    color: white !important;
 }
 
 .navbar-nav {
@@ -23,13 +66,14 @@ body {
     margin:0 auto;
     display: block;
     text-align: center;
+    font-size: 1.3vw
 }
 
 .navbar-nav > li {
     display: inline-block;
     float:none;
-    /* padding-left: 20px; */
-    padding-right: 5vw;
+    padding-right: 4vw;
+    padding-left: 4vw;
 }
 
 .logo {
@@ -38,6 +82,27 @@ body {
   display: block;
   text-align: center;
 
+}
+
+.logo-image {
+  background-image: url(../images/pic3.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 15vw 10vw;
+  padding: 15px;
+  /* background-size: cover; */
+  height: 10vw;
+  position: relative;
+}
+
+.logo-text {
+  text-align: center;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 1.2rem
 }
 
 .slogan {
@@ -179,6 +244,12 @@ ol > li {
   margin-top: 20px;
 }
 
+
+.fixed-social {
+  position: fixed;
+  bottom: 16vw;
+  right: 11vw;
+}
 
 footer {
   background-color: #343a40!important;

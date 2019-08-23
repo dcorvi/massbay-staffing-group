@@ -7,8 +7,9 @@ from flask import flash
 class JobForm(FlaskForm):
     job_title = StringField('Job Title:', validators=[InputRequired()])
     company = StringField('Company:')
-    job_status = RadioField('Job Status:',choices=[('Full-time', 'Full-time'), ('Part-time', 'Part-time'),('Contract', 'Contract'),('Other', 'Other')], validators=[InputRequired(message='Must select a job status')])
+    job_status = RadioField('Job Status:',choices=[('Full-time', 'Full-time'), ('Part-time', 'Part-time'),('Other', 'Other')], validators=[InputRequired(message='Must select a job status')])
     job_sector = RadioField('Job Sector:',choices=[('Public', 'Public'), ('Private', 'Private'),('', '[blank]')], validators=[Optional()])
+    job_type = RadioField('Job Type:',choices=[('Perminant', 'Perminant'), ('Internship', 'Internship'),('Contract', 'Contract'),('', '[blank]')], validators=[InputRequired(message='Must select a job type')])
     city = StringField('City:', validators=[InputRequired()])
     state = SelectField('State:',choices=[('MA', 'MA'), ('NH', 'NH'),('VT', 'VT'),('ME', 'ME'), ('RI', 'RI')], validators=[InputRequired(message='Must select a state')])
     zip = StringField('Zip:', validators=[InputRequired(), Length(min=5,max=5, message='Zip code must be 5 characters')], render_kw={"placeholder": "00000"})

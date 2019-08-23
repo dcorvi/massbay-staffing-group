@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-12">
 <div class="jumbotron">
-  <h1>{{ post.title }}</h1>
-  <h2>Written by: {{post.author.username}}</h2>
-  <h3>Published: {{ post.date.strftime('%B %d, %Y') }}</h3>
-  <p>{{post.text}}</p>
+  <h2>{{ post.title }}</h2>
+  <h6>Written by: {{post.author.username}}</h6><br />
+  <p>{{post.text}}</p><br />
+  <p>Published: {{ post.date.strftime('%B %d, %Y') }}<p>
    {% if post.author == current_user %}
      <div>
        <a class="btn btn-secondary" href="{{ url_for('blog_posts.update', blog_post_id=post.id) }}">Update</a>
@@ -38,5 +41,7 @@
       </div>
     </div>
   </div>
-
+</div> <!-- end col-md-12 -->
+</div> <!-- end row -->
+</div> <!-- end container -->
 {% endblock content %}

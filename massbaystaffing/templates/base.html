@@ -8,7 +8,23 @@
   {{ super() }}
   <link rel="stylesheet" href="../static/css/main.css">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
   <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-T5jhQKMh96HMkXwqVMSjF3CmLcL1nT9//tCqu9By5XSdj7CwR0r+F3LTzUdfkkQf" crossorigin="anonymous">
+
+
+  <!-- the following scripts have to be in the styles block for popovers and dropdowns to work at the same time -->
+  <!-- jQuery CDN -->
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+  <!-- Bootstrap AJAX CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+  <!-- has to be processed last -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
 {% endblock %}
 
 {% block navbar %}
@@ -54,16 +70,32 @@
     {% endif %}
   {% endwith %}
 
+
+  <div id="social-media-icons">
+
+      <a href="https://www.linkedin.com/in/dennis-corvi-868a091/" target="_blank"> <img class="fa" src="../static/images/linkedin.png"> </a>
+
+      <a href="https://twitter.com/dennismassbay" target="_blank"><img class="fa" src="../static/images/twt.png"> </a>
+
+      <a href="https://www.facebook.com/Mass-Bay-Staffing-Group-109318509177259/" target="_blank"><img class="fa" src="../static/images/fbk.png"> </a>
+  </div>
+
+
 <!-- As logo as a link -->
   <a href="{{ url_for('core.index') }}">
-<img class="logo" src="../static/images/logo1.png" alt="avatar" height="100" width="200"></a>
+<!-- <img class="logo" src="../static/images/pic3.jpg" alt="avatar" height="100" width="200"> -->
+<div class="logo-image">
+  <p class="logo-text">Mass Bay Staffing Group</p>
+  </div>
+</a>
 
 <nav class="navbar sticky-top navbar-default navbar-expand-lg navbar-dark" style="background-color: #007bff;">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav mr-5">
+    <!-- <ul class="navbar-nav mr-5"> -->
+    <ul class="navbar-nav">
 
       {% if title == 'About Us' %}
         <li class="nav-item active">
@@ -104,7 +136,7 @@
       {% endif %}
           <a class="nav-link" href="{{ url_for('core.contact') }}">Contact</a>
         </li>
-    </ul>
+
 
         <span class="navbar-nav">
        {% if current_user.is_authenticated %}
@@ -121,33 +153,35 @@
                <a class="dropdown-item" href="{{url_for('users.account')}}">Account</a>
                <a class="dropdown-item" href="{{ url_for('job_posts.create_job') }}">Create Job</a>
                <a class="dropdown-item" href="{{ url_for('blog_posts.create_post') }}">Create Blog Post</a>
-               <a class="dropdown-item" href="{{url_for('users.profile', username=current_user.username)}}">Profile</a>
+               <!-- <a class="dropdown-item" href="{{url_for('users.profile', username=current_user.username)}}">Profile</a> -->
                <div class="dropdown-divider"></div>
                <a class="dropdown-item" href="{{url_for('users.logout')}}">Logout</a>
              </div>
             </li>
        {% else %}
-       {% if title == 'Login' %}
-         <li class="nav-item active">
-       {% else %}
-         <li class="nav-item">
-       {% endif %}
-         <a class="nav-link" href="{{url_for('users.login')}}">Log In</a>
-       </li>
-
-       {% if title == 'Register' %}
-         <li class="nav-item active">
-       {% else %}
-         <li class="nav-item">
-       {% endif %}
-         <a class="nav-link" href="{{url_for('users.register')}}">Register</a>
-       </li>
-       {% endif %}
-     </span> <!-- end login/register and account links -->
-
+         {% endif %}
+              <!-- start login/register and account links -->
+     </span>   <!-- end login/register and account links -->
+    </ul>
   </div> <!-- end nav bar -->
-</nav>
 
+  <!-- DEMO MODE FIXED BUTTON -->
+  {% if not current_user.is_authenticated %}
+  <div class="fixed">
+    <div class="btn-group">
+      <button class="btn btn-warning btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Demo Mode
+      </button>
+      <!-- <div class="dropdown-menu"> -->
+      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <a class="dropdown-item" href="{{url_for('users.admin_login')}}">Admin Login</a>
+
+      </div> <!-- end dropdown menu -->
+    </div> <!-- end btn group -->
+  </div> <!-- end fixed class -->
+  {% endif %}
+
+</nav>
 {% endblock %}
 
 
@@ -160,25 +194,26 @@
   {% endblock %}
 
 {% block scripts %}
-<!-- jQuery CDN -->
-<script
-src="https://code.jquery.com/jquery-3.3.1.min.js"
-integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-crossorigin="anonymous"></script>
-<!-- Bootstrap AJAX CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+  <!-- the following scripts have to be in the scripts block for popovers and dropdowns to work at the same time -->
+
+<!-- Linking own script file -->
+<script type="text/javascript" src="./static/js/app.js"></script>
+
+<!-- has to be processed first -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
 {{super()}}
 {% endblock %}
-
-<!-- jQuery CDN -->
-<!-- <script
-src="https://code.jquery.com/jquery-3.3.1.min.js"
-integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-crossorigin="anonymous"></script> -->
-
-<!-- Bootstrap AJAX CDN -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->

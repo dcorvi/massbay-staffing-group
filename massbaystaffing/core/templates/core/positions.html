@@ -11,47 +11,127 @@
     <div class="col-md-12">
   <h1>{{ title }}</h1>
 
-  <div class="container">
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="pills-Perminant-tab" data-toggle="pill" href="#pills-Perminant" role="tab" aria-controls="pills-Perminant" aria-selected="true">Perminant</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-Contract-tab" data-toggle="pill" href="#pills-Contract" role="tab" aria-controls="pills-Contract" aria-selected="false">Contract</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-Internships-tab" data-toggle="pill" href="#pills-Internships" role="tab" aria-controls="pills-Internships" aria-selected="false">Internships</a>
+    </li>
+  </ul> <!-- end tab labels -->
 
-    {# Go through each job post #}
-  {% if job_posts.items %}
-    {% for post in job_posts.items %}
+  {# Go through each job post #}
+{% if job_posts.items %}
+  {% for post in job_posts.items %}
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-Perminant" role="tabpanel" aria-labelledby="pills-Perminant-tab">
+      <div class="container">
+      {% if post.job_type == 'Perminant' %}
+        <div class="card" >
+          <div class="card-body">
+            <h2><a class="card-title" href="  {{ url_for('job_posts.job_post', job_post_id=post.id) }}">{{ post.job_title }}</a></h2>
+            <h4>{{ post.company }}</h4>
+            <a href="{{ url_for('users.user_posts', username=post.jobposter.username) }}">Job poster: {{ post.jobposter.username }}</a>
+            <p>Published on: {{ post.job_creation_date.strftime('%m-%d-%Y') }}</p>
+            <p class="card-text">Description: {{ post.job_description[:100] }} ...</p>
+            <p class="card-text">Description: {{ post.job_type }}</p>
+            <a href="{{ url_for('job_posts.job_post', job_post_id=post.id) }}" class="btn btn-outline-info">Job Details</a>
+          </div> <!-- end card body -->
+        </div>  <!-- end card -->
 
-    <div class="card" >
-      <div class="card-body">
-        <h2><a class="card-title" href="  {{ url_for('job_posts.job_post', job_post_id=post.id) }}">{{ post.job_title }}</a></h2>
-        <h4>{{ post.company }}</h4>
-        <a href="{{ url_for('users.user_posts', username=post.jobposter.username) }}">Job poster: {{ post.jobposter.username }}</a>
-        <p>Published on: {{ post.job_creation_date.strftime('%m-%d-%Y') }}</p>
-        <p class="card-text">Description: {{ post.job_description[:100] }} ...</p>
-        <a href="{{ url_for('job_posts.job_post', job_post_id=post.id) }}" class="btn btn-outline-info">Job Details</a>
-      </div>
+        <br />
+       <nav aria-label="Page navigation example">
+         <ul class="pagination justify-content-center">
+           {% for page_num in job_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+              {% if job_posts.page == page_num %}
+              <li class="page-item disabled">
+                <a class="page-link" href="{{ url_for('core.positions', page=page_num) }}">{{ page_num }}</a></li>
+
+              {% else %}
+              <li class="page-item"><a class="page-link" href="{{ url_for('core.positions', page=page_num) }}">{{ page_num }}</a></li>
+              {% endif %}
+        </nav>
+        {% endfor %}
+       </div> <!-- end container -->
+
+    </div>
+    {% endif %}
+
+    <div class="tab-pane fade" id="pills-Contract" role="tabpanel" aria-labelledby="pills-Contract-tab">
+
+      ...
+      {% if post.job_type == 'Contract' %}
+      <div class="card" >
+        <div class="card-body">
+          <h2><a class="card-title" href="  {{ url_for('job_posts.job_post', job_post_id=post.id) }}">{{ post.job_title }}</a></h2>
+          <h4>{{ post.company }}</h4>
+          <a href="{{ url_for('users.user_posts', username=post.jobposter.username) }}">Job poster: {{ post.jobposter.username }}</a>
+          <p>Published on: {{ post.job_creation_date.strftime('%m-%d-%Y') }}</p>
+          <p class="card-text">Description: {{ post.job_description[:100] }} ...</p>
+          <p class="card-text">Description: {{ post.job_type }}</p>
+          <a href="{{ url_for('job_posts.job_post', job_post_id=post.id) }}" class="btn btn-outline-info">Job Details</a>
+        </div> <!-- end card body -->
+      </div>  <!-- end card -->
+
+      <br />
+     <nav aria-label="Page navigation example">
+       <ul class="pagination justify-content-center">
+         {% for page_num in job_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if job_posts.page == page_num %}
+            <li class="page-item disabled">
+              <a class="page-link" href="{{ url_for('core.positions', page=page_num) }}">{{ page_num }}</a></li>
+
+            {% else %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('core.positions', page=page_num) }}">{{ page_num }}</a></li>
+            {% endif %}
+      </nav>
+      {% endfor %}
+       {% endif %}
     </div>
 
-   {% endfor %}
+    <div class="tab-pane fade" id="pills-Internships" role="tabpanel" aria-labelledby="pills-Internships-tab">
 
-    <br>
-   <nav aria-label="Page navigation example">
-     <ul class="pagination justify-content-center">
-       {% for page_num in job_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-          {% if job_posts.page == page_num %}
-          <li class="page-item disabled">
-            <a class="page-link" href="{{ url_for('core.positions', page=page_num) }}">{{ page_num }}</a></li>
+        ...
+        {% if post.job_type == 'Internship' %}
+        <div class="card" >
+          <div class="card-body">
+            <h2><a class="card-title" href="  {{ url_for('job_posts.job_post', job_post_id=post.id) }}">{{ post.job_title }}</a></h2>
+            <h4>{{ post.company }}</h4>
+            <a href="{{ url_for('users.user_posts', username=post.jobposter.username) }}">Job poster: {{ post.jobposter.username }}</a>
+            <p>Published on: {{ post.job_creation_date.strftime('%m-%d-%Y') }}</p>
+            <p class="card-text">Description: {{ post.job_description[:100] }} ...</p>
+            <p class="card-text">Description: {{ post.job_type }}</p>
+            <a href="{{ url_for('job_posts.job_post', job_post_id=post.id) }}" class="btn btn-outline-info">Job Details</a>
+          </div> <!-- end card body -->
+        </div>  <!-- end card -->
 
-          {% else %}
-          <li class="page-item"><a class="page-link" href="{{ url_for('core.positions', page=page_num) }}">{{ page_num }}</a></li>
-          {% endif %}
-  {% endfor %}
-</nav>
-   {% else %}
-   <h4>No jobs added</h4><br>
-      {% if current_user.is_authenticated %}
-      <h5><a class="btn btn-outline-info" href="{{ url_for('job_posts.create_job') }}">Add job</a></h5>
-    {% else %}
-    {% endif %}
-   {% endif %}
-  </div> <!-- end col-md-8 -->
-  </div> <!-- end row -->
+        <br />
+       <nav aria-label="Page navigation example">
+         <ul class="pagination justify-content-center">
+           {% for page_num in job_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+              {% if job_posts.page == page_num %}
+              <li class="page-item disabled">
+                <a class="page-link" href="{{ url_for('core.positions', page=page_num) }}">{{ page_num }}</a></li>
+
+              {% else %}
+              <li class="page-item"><a class="page-link" href="{{ url_for('core.positions', page=page_num) }}">{{ page_num }}</a></li>
+              {% endif %}
+        </nav>
+        {% endfor %}
+
+       {% endif %}
+       {% endfor %} <!-- End cycle through jobs -->
+    </div>
+  </div> <!-- End tab content -->
+  {% endif %}
+
+
+
+      </div> <!-- end col-md-12 -->
+    </div> <!-- end row -->
   </div> <!-- end container -->
 
 {% endblock %}
